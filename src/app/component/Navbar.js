@@ -44,9 +44,9 @@ const Navbar = () => {
         </div>
         {   searchWord !== "" ?
                  <div className=" w-96 h-[90%] bg-white absolute top-12 right-0 z-[500] p-3">
-                    {data.map((item)=> (
+                    {data.map((item, index)=> (
                         item.NAME.toLowerCase().includes(searchWord.toLowerCase()) ?
-                        <a href="/shipdetails" className=" border-b-2">{item.NAME}</a>
+                        <a key={index} href="/shipdetails" className=" border-b-2">{item.NAME}</a>
                         :
                         null
                     ))
