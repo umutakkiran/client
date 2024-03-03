@@ -36,7 +36,7 @@ const CardComponent = ({selectedShip, visible, setCardVisible}) => {
                 <a href="/shipdetails">{selectedShip[0].NAME}</a>
                 </div>
                 <div className=" w-full h-48 relative">
-                <Image fill src={"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"} />
+                <Image fill src={"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"} alt="noimage" />
                 </div>
                 <div className=" w-full px-3">
                     <ul>
