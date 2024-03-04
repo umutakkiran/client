@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-const CardComponent = ({selectedShip, visible, setCardVisible}) => {
+const CardComponent = ({selectedShip, visible, setCardVisible, destStore}) => {
+    const [prevDest, setPrevDest] = useState(null)
 
     function formatDate(dateString) {
         const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -23,6 +25,18 @@ const CardComponent = ({selectedShip, visible, setCardVisible}) => {
         {type:70, name:"70. Koda Karşılık Gelen bilgi"},
         {type:80, name:"80. Koda Karşılık Gelen bilgi"},
       ]
+
+      useEffect(() => {
+        setPrevDest(null);
+        if (selectedShip) {
+            destStore.map((item) => (
+                item.id === selectedShip[0].MMSI && item.destination !== selectedShip[0].DEST ?
+                setPrevDest(item.destination)
+                :
+                null
+            ))
+        }
+      },[destStore,selectedShip])
 
     return (
         <>
@@ -48,10 +62,11 @@ const CardComponent = ({selectedShip, visible, setCardVisible}) => {
                         <li>Nav Status: {selectedShip[0].NAVSTAT ? selectedShip[0].NAVSTAT : "Bilgi Bulunamadı" }</li>
                         <li>Last Report: {selectedShip[0].TIME ? selectedShip[0].TIME : "Bilgi Bulunamadı" }</li>
                         <li>Position: {selectedShip[0].LONGITUDE && selectedShip[0].LATITUDE ? <p> LAT: {selectedShip[0].LATITUDE} , LONG: {selectedShip[0].LONGITUDE} </p>   : "Bilgi Bulunamadı" }</li>
+                        <li>Previous Destination: {prevDest ? prevDest   : "Bilgi Bulunamadı" }</li>
                     </ul>
                     <h2 className=" w-full h-8 bg-red-400 justify-center items-center flex">Vessel Particulars</h2>
                     <ul>
-                        <li>Type: {selectedShip[0].TYPE ? shipTypes.filter(x => x.type === selectedShip[0].TYPE )[0].name : "Bilgi Bulunamadı" }</li>
+                        <li>Type: {selectedShip[0].TYPE ? shipTypes.filter(x => x.type === selectedShip[0].TYPE )[0]?.name : "Bilgi Bulunamadı" }</li>
                         <li>IMO: {selectedShip[0].IMO ? selectedShip[0].IMO : "Bilgi Bulunamadı" }</li>
                         <li>MMSI: {selectedShip[0].MMSI ? selectedShip[0].MMSI : "Bilgi Bulunamadı" }</li>
                     </ul>
