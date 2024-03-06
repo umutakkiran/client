@@ -34,7 +34,7 @@ export const getShipsDataThunk = () => {
 }
 
 const handlePostDataToMongo = async (data) => {
-      const res = await fetch(`http://localhost:3000/api/destination`, {
+      const res = await fetch(`/api/destination`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
