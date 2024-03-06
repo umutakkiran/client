@@ -52,7 +52,6 @@ const Table = ({ value, isDeparture }) => {
 
     return (
         <>
-            <Suspense fallback={<p>Loading...</p>}>
             <div className='  transition-all ease-in-out duration-700 pb-10 shadow-lg w-[90%] h-48'>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <caption className="p-5 text-lg font-semibold font-mono text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
@@ -113,8 +112,6 @@ const Table = ({ value, isDeparture }) => {
                     </tbody>
                 </table>
             </div>
-            </Suspense>
-           
         </>
     )
 
