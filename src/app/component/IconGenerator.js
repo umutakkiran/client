@@ -1,25 +1,9 @@
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { IoCloseSharp } from "react-icons/io5";
-import { FaArrowRight } from "react-icons/fa";
-const CardComponent = ({selectedShip, visible, setCardVisible}) => {
-    const [destinations, setDestinations] = useState([])
+import 'leaflet/dist/leaflet.css'
+import L from "leaflet";
 
-    function formatDate(dateString) {
-        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    
-        const date = new Date(dateString);
-        const month = months[date.getMonth()];
-        const day = date.getDate();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-    
-        const formattedDate = `${month},${day < 10 ? '0' + day : day} ${hours < 10 ? '0' + hours : hours}-${minutes < 10 ? '0' + minutes : minutes}`;
-        
-        return formattedDate;
-      }
-
-      const shipTypes = [
+export function IconGenerator  (data) {
+    let iconUrl = "/icons/ship-solid.svg";
+    const shipTypes = [
         { Type: "Not available (default)", Name: "Reserved for future use", Color: "/icons/ship-solid-mor.svg" },
         { Type: "1", Name: "Reserved for future use", Color: "/icons/ship-solid-mor.svg" },
         { Type: "2", Name: "Reserved for future use", Color: "/icons/ship-solid-mor.svg" },
@@ -121,81 +105,21 @@ const CardComponent = ({selectedShip, visible, setCardVisible}) => {
         { Type: "98", Name: "Other Type, Reserved for future use", Color: "/icons/ship-solid-red.svg" },
         { Type: "99", Name: "Other Type, no additional information", Color: "/icons/ship-solid-red.svg" }
     ];
-      
-      useEffect( () => {
-        if (selectedShip) {
-            handleGetById();
-        }
 
-        console.log( JSON.stringify(destinations)  + "responseeeee");
-      },[selectedShip])
+    shipTypes.map((item)=> (
+        item.Type == data ?
+        iconUrl = item.Color
+        :
+        null
+    ))
 
-      const handleGetById = async () => {
-        const res = await fetch(`http://localhost:3000/api/destination/${selectedShip[0].MMSI}`);
-        const response = await res.json();
-        console.log( JSON.stringify(response.destinations) + "RESPONSE")
-        setDestinations(response.destinations)
-      }
+    return L.icon({
+        iconSize: [25, 41],
+        iconAnchor: [10, 41],
+        popupAnchor: [2, -40],
+        // specify the path here
+        iconUrl: iconUrl ? iconUrl : "/icons/ship-solid.svg",
+        shadowUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png"
+      });
 
-      const navStats = [
-        { type: 0, name: "Under way using engine" },
-        { type: 1, name: "At anchor" },
-        { type: 2, name: "Not under command" },
-        { type: 3, name: "Restricted manoeuverability" },
-        { type: 4, name: "Constrained by her draught" },
-        { type: 5, name: "Moored" },
-        { type: 6, name: "Aground" },
-        { type: 7, name: "Engaged in Fishing" },
-        { type: 8, name: "Under way sailing" },
-        { type: 9, name: "Reserved for future amendment of Navigational Status for HSC" },
-        { type: 10, name: "Reserved for future amendment of Navigational Status for WIG" },
-        { type: 11, name: "Reserved for future use" },
-        { type: 12, name: "Reserved for future use" },
-        { type: 13, name: "Reserved for future use" },
-        { type: 14, name: "AIS-SART is active" },
-        { type: 15, name: "Not defined (default)" }
-      ]
-
-
-    return (
-        <>
-        { visible === true ?
-            <div className=' absolute w-72 h-fit left-0 top-12 z-[500] bg-white transition-all ease-in-out duration-700 pb-10 shadow-lg rounded-br-lg rounded-bl-lg'>
-                <div className=" flex flex-row w-full justify-between px-3 bg-[#818FB4]">
-                <button className=" hover:text-orange-300 rounded-full" onClick={() => setCardVisible(false)}>
-                <IoCloseSharp className=" w-5 h-5" />
-                </button>
-                
-                <a href={`/shipdetails/${selectedShip[0].MMSI}`} className=" flex flex-row justify-center items-center font-bold font-mono">{selectedShip[0].NAME}<span className=" ml-3"><FaArrowRight /></span></a>
-                </div>
-                <div className=" w-full h-48 relative">
-                <Image fill src={"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"} alt="noimage" />
-                </div>
-                <div className=" w-full px-3">
-                    <ul>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Destination</span>: {selectedShip[0].DEST ? selectedShip[0].DEST : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">ETA</span>: {selectedShip[0].ETA ? formatDate(selectedShip[0].ETA) : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Speed</span>: {selectedShip[0].SOG ? selectedShip[0].SOG : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Course</span>: {selectedShip[0].COG ? selectedShip[0].COG : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Draught</span>: {selectedShip[0].DRAUGHT ? selectedShip[0].DRAUGHT : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Nav Status</span>: {selectedShip[0].NAVSTAT ? navStats.map((item, index) => ( item.type == selectedShip[0].NAVSTAT ? <p key={index} >{item.name}</p>: null)) : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Last Report</span>: {selectedShip[0].TIME ? selectedShip[0].TIME : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Position</span>: {selectedShip[0].LONGITUDE && selectedShip[0].LATITUDE ? <p> LAT: {selectedShip[0].LATITUDE} , LONG: {selectedShip[0].LONGITUDE} </p>   : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Previous Destination</span>: {destinations ? destinations?.slice(-2, -1)[0]?.destination : "Bilgi Bulunamadı"}</li>
-                    </ul>
-                    <h2 className=" w-full h-8 bg-red-400 justify-center items-center flex">Vessel Particulars</h2>
-                    <ul>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">Type</span>: {selectedShip[0].TYPE ? shipTypes.filter(x => x.Type == selectedShip[0].TYPE )[0]?.Name : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">IMO</span>: {selectedShip[0].IMO ? selectedShip[0].IMO : "Bilgi Bulunamadı" }</li>
-                        <li className=" text-sm"> <span className=" font-mono font-bold">MMSI</span>: {selectedShip[0].MMSI ? selectedShip[0].MMSI : "Bilgi Bulunamadı" }</li>
-                    </ul>
-                </div>
-            </div>
-            :
-            null
-        }
-        </>
-    )
 }
-
-export default CardComponent;

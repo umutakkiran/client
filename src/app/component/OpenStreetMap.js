@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, ZoomControl, Tooltip} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { FaStar } from "react-icons/fa";
+import { IconGenerator } from './IconGenerator';
 
 
 const Map2 = ({data, onPressShip}) => {
@@ -12,15 +12,6 @@ const Map2 = ({data, onPressShip}) => {
   const mapRef = useRef()
 
   const bounds = L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180));
-
-  const markerIcon = L.icon({
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-    // specify the path here
-    iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png"
-  });
 
   function formatDate(dateString) {
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -35,6 +26,7 @@ const Map2 = ({data, onPressShip}) => {
     
     return formattedDate;
   }
+
   return (
     <>
       <div className=' w-full h-full relative'>
@@ -52,7 +44,7 @@ const Map2 = ({data, onPressShip}) => {
                 onPressShip(item.MMSI)
               },
             }}
-            icon={markerIcon} position={[item.LATITUDE, item.LONGITUDE]}>
+            icon={IconGenerator(item.TYPE) } position={[item.LATITUDE, item.LONGITUDE]}>
               <Tooltip direction="bottom" offset={[0, 20]} opacity={1} >
                 <div className=' flex flex-col bg-white w-fit h-fit'>
                   <a className=' text-xs font-bold'> {item.NAME}</a>
@@ -64,9 +56,6 @@ const Map2 = ({data, onPressShip}) => {
           <ZoomControl position="bottomright" />
         </MapContainer>
       </div>
-
-
-
     </>
   )
 }

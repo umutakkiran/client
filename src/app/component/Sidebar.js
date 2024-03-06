@@ -6,7 +6,7 @@ const Sidebar = () => {
 
     return (
         <>
-        <div className=" w-full h-full bg-[#B4D4FF] flex flex-col justify-evenly items-center">
+        <div className=" w-full h-full bg-[#818FB4] flex flex-col justify-evenly items-center shadow-lg border-r-2 border-r-stone-950">
           <div className=" w-full h-96 flex flex-col justify-start items-center space-y-10">
           <FaStar className=" text-white" />
           <FaFilter  className=" text-white"/>
