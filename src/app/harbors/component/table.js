@@ -72,57 +72,57 @@ const Table = ({ value, departure }) => {
     return (
         <>
             <div className='  transition-all ease-in-out duration-700 pb-10 shadow-lg w-[90%] h-48'>
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <caption class="p-5 text-lg font-semibold font-mono text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <caption className="p-5 text-lg font-semibold font-mono text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                         Port Informations
                     </caption>
-                    <thead class="text-xs font-bold font-mono text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs font-bold font-mono text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 ETA By AIS
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Vessel
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                { departure === true ? "Last Port" : "Distance"}
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Destination
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 GT
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 DWT
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" className="px-6 py-3">
                                 Size
                             </th>
                         </tr>
                     </thead>
                     <tbody className=" h-36 overflow-scroll">
                         {filteredData.map((item, index) => (
-                             <tr key={index} class=" border-b bg-[#818FB4]">
-                                  <th scope="row" class="px-6 py-4 font-medium font-mono whitespace-nowrap text-white">
+                             <tr key={index} className=" border-b bg-[#818FB4]">
+                                  <th scope="row" className="px-6 py-4 font-medium font-mono whitespace-nowrap text-white">
                                     {formatDate(item.ETA)}
                                   </th>
-                                  <td class="px-6 py-4 text-white font-mono">
+                                  <td className="px-6 py-4 text-white font-mono">
                                     {item.NAME}
                                   </td>
-                                  <td class="px-6 py-4 text-white font-mono">
+                                  <td className="px-6 py-4 text-white font-mono">
                                     { departure === true ? item.LASTPORT : item.A}
                                   </td>
-                                  <td class="px-6 py-4 text-white font-mono">
+                                  <td className="px-6 py-4 text-white font-mono">
                                     {item.DEST}
                                   </td>
-                                  <td class="px-6 py-4 text-white font-mono">
+                                  <td className="px-6 py-4 text-white font-mono">
                                     {item.B}
                                   </td>
-                                  <td class="px-6 py-4 text-white font-mono text-right">
+                                  <td className="px-6 py-4 text-white font-mono text-right">
                                      {item.C}
                                   </td>
-                                  <td class="px-6 py-4 text-white font-mono text-right">
+                                  <td className="px-6 py-4 text-white font-mono text-right">
                                      {item.D}
                                   </td>
                               </tr>
