@@ -1,9 +1,10 @@
 "use client"
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa";
-
 const Navbar = () => {
+  const router = useRouter();
   const [searchWord, setSearchword] = useState("")
   const [data, setData] = useState(null);
   const [loaded, setLoaded] = useState(false)
@@ -28,8 +29,8 @@ const Navbar = () => {
         </div>
 
         <div className=" flex justify-center items-center space-x-5">
-          <a href="/" className=" text-white font-mono hover:cursor-pointer ">MAP</a>
-          <a href="/harbors" className=" text-white font-mono hover:cursor-pointer ">HARBORS</a>
+          <button onClick={() => router.push("/")} className=" text-white font-mono hover:cursor-pointer ">MAP</button>
+          <button onClick={() => router.push("/harbors")} className=" text-white font-mono hover:cursor-pointer ">HARBORS</button>
         </div>
 
 

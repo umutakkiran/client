@@ -1,7 +1,7 @@
 import { DepartureFinder } from "@/app/component/DepartureFinder";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-const Table = ({ value, departure }) => {
+const Table = ({ value, isDeparture }) => {
     const allShips = useSelector(state => state.allShips)
 
 
@@ -23,35 +23,31 @@ const Table = ({ value, departure }) => {
 
     useEffect(() => {
         const res = [];
-
         allShips?.data?.map((item) => (
-            value?.some((dataItem) => dataItem === item.NAVSTAT ) ?
+            value?.some((dataItem) => dataItem === item.NAVSTAT) ?
                 res.push(item)
                 :
                 null
         ))
-        
-        if (departure === false) {
-             setFilteredData(res)
-        }else{
-           handleGetDepartures(res);
+
+        if (isDeparture === false) {
+            setFilteredData(res)
+        } else {
+            handleGetDepartures(res);
         }
 
-        console.log(JSON.stringify(res))
-    }, [data, value, departure]);
+    }, [allShips, value, isDeparture]);
 
     const handleGetDepartures = async (data) => {
         const departures = [];
-
-    for (const item of data) {
-        const departure = await DepartureFinder(item);
-        if (departure !== null) {
-            departures.push(departure);
+        for (const item of data) {
+            const departure = await DepartureFinder(item);
+            if (departure !== null) {
+                departures.push(departure);
+            }
         }
-    }
 
-    console.log(departures + "departures")
-    setFilteredData(departures)
+        setFilteredData(departures)
     }
 
     return (
@@ -70,7 +66,7 @@ const Table = ({ value, departure }) => {
                                 Vessel
                             </th>
                             <th scope="col" className="px-6 py-3">
-                               { departure === true ? "Last Port" : "Distance"}
+                                {isDeparture === true ? "Last Port" : "Distance"}
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Destination
@@ -88,38 +84,35 @@ const Table = ({ value, departure }) => {
                     </thead>
                     <tbody className=" h-36 overflow-scroll">
                         {filteredData.map((item, index) => (
-                             <tr key={index} className=" border-b bg-[#818FB4]">
-                                  <th scope="row" className="px-6 py-4 font-medium font-mono whitespace-nowrap text-white">
+                            <tr key={index} className=" border-b bg-[#818FB4]">
+                                <th scope="row" className="px-6 py-4 font-medium font-mono whitespace-nowrap text-white">
                                     {formatDate(item.ETA)}
-                                  </th>
-                                  <td className="px-6 py-4 text-white font-mono">
+                                </th>
+                                <td className="px-6 py-4 text-white font-mono">
                                     {item.NAME}
-                                  </td>
-                                  <td className="px-6 py-4 text-white font-mono">
-                                    { departure === true ? item.LASTPORT : item.A}
-                                  </td>
-                                  <td className="px-6 py-4 text-white font-mono">
+                                </td>
+                                <td className="px-6 py-4 text-white font-mono">
+                                    {isDeparture === true ? item.LASTPORT : item.A}
+                                </td>
+                                <td className="px-6 py-4 text-white font-mono">
                                     {item.DEST}
-                                  </td>
-                                  <td className="px-6 py-4 text-white font-mono">
+                                </td>
+                                <td className="px-6 py-4 text-white font-mono">
                                     {item.B}
-                                  </td>
-                                  <td className="px-6 py-4 text-white font-mono text-right">
-                                     {item.C}
-                                  </td>
-                                  <td className="px-6 py-4 text-white font-mono text-right">
-                                     {item.D}
-                                  </td>
-                              </tr>
-                             ))
-                          }
-                       
+                                </td>
+                                <td className="px-6 py-4 text-white font-mono text-right">
+                                    {item.C}
+                                </td>
+                                <td className="px-6 py-4 text-white font-mono text-right">
+                                    {item.D}
+                                </td>
+                            </tr>
+                        ))
+                        }
                     </tbody>
                 </table>
-                
             </div>
         </>
-
     )
 
 }

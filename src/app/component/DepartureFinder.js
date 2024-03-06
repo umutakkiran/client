@@ -1,5 +1,5 @@
 
-export async function DepartureFinder  (data) {
+export const DepartureFinder = async  (data) => {
     let result = {ETA: null , NAME:  null , LASTPORT: null, DEST:null};
     const res = await fetch(`/api/destination/${data.MMSI}`);
     const response = await res.json();

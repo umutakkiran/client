@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "./component/table";
 
 export default function Home() {
@@ -54,7 +54,7 @@ export default function Home() {
           </ul>
         </div>
         <div className=" flex justify-center items-center ">
-          <Table value={tabState} departure={isDeparture} />
+          <Table value={tabState} isDeparture={isDeparture} />
         </div>
       </div>
     </>
