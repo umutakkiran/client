@@ -131,7 +131,7 @@ const CardComponent = ({selectedShip, visible, setCardVisible}) => {
       },[selectedShip])
 
       const handleGetById = async () => {
-        const res = await fetch(`http://localhost:3000/api/destination/${selectedShip[0].MMSI}`);
+        const res = await fetch(`/api/destination/${selectedShip[0].MMSI}`);
         const response = await res.json();
         console.log( JSON.stringify(response.destinations) + "RESPONSE")
         setDestinations(response.destinations)

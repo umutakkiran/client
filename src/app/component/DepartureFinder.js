@@ -1,7 +1,7 @@
 
 export async function DepartureFinder  (data) {
     let result = {ETA: null , NAME:  null , LASTPORT: null, DEST:null};
-    const res = await fetch(`http://localhost:3000/api/destination/${data.MMSI}`);
+    const res = await fetch(`/api/destination/${data.MMSI}`);
     const response = await res.json();
 
     response.destinations.length > 1 ?
