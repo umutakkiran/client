@@ -1,11 +1,9 @@
 import { DepartureFinder } from "@/app/component/DepartureFinder";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaVialVirus } from "react-icons/fa6";
-import { IoCloseSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
 const Table = ({ value, departure }) => {
-    const [data, setData] = useState(null);
-    const [loaded, setLoaded] = useState(false)
+    const allShips = useSelector(state => state.allShips)
+
 
     const [filteredData, setFilteredData] = useState([]);
 
@@ -24,22 +22,9 @@ const Table = ({ value, departure }) => {
     }
 
     useEffect(() => {
-        async function fetchData() {
-            const response = await fetch('/api');
-            const data = await response.json();
-            setData(data);
-            setLoaded(true);
-        }
-
-        if (!loaded) {
-            fetchData();
-        }
-    }, [loaded]);
-
-    useEffect(() => {
         const res = [];
 
-        data?.map((item) => (
+        allShips?.data?.map((item) => (
             value?.some((dataItem) => dataItem === item.NAVSTAT ) ?
                 res.push(item)
                 :
