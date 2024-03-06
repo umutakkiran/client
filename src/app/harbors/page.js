@@ -54,7 +54,7 @@ export default function Home() {
           </ul>
         </div>
         <div className=" flex justify-center items-center ">
-          <Table value={tabState} isDeparture={isDeparture} />
+          <Table key={tabState} value={tabState} isDeparture={isDeparture} />
         </div>
       </div>
     </>
