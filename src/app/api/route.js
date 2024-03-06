@@ -1,16 +1,40 @@
 import { NextResponse } from "next/server";
+import axios from 'axios';
+import connectMongodb from "../../../libs/mongodb";
+import Destination from "../../../models/destination";
 
-const data = [
-{"MMSI":211532600,"TIME":"2024-03-04 08:50:37 GMT","LONGITUDE":13.29728,"LATITUDE":52.52429,"COG":0,"SOG":0,"HEADING":511,"ROT":128,"NAVSTAT":15,"IMO":0,"NAME":"CAPT. MORGAN","CALLSIGN":"DC9804","TYPE":69,"A":6,"B":19,"C":2,"D":4,"DRAUGHT":0,"DEST":"","ETA":"00-00 24:60"},
-{"MMSI":275493000,"TIME":"2024-03-04 08:47:59 GMT","LONGITUDE":-6.03487,"LATITUDE":52.98109,"COG":228.3,"SOG":0,"HEADING":215,"ROT":0,"NAVSTAT":5,"IMO":8516263,"NAME":"CEG GALAXY","CALLSIGN":"YLPF","TYPE":70,"A":51,"B":12,"C":9,"D":3,"DRAUGHT":3.6,"DEST":"IEWIC","ETA":"04-03 06:00"},
-{"MMSI":316029000,"TIME":"2024-03-04 08:48:12 GMT","LONGITUDE":-79.78639,"LATITUDE":43.27269,"COG":153.2,"SOG":0,"HEADING":511,"ROT":128,"NAVSTAT":5,"IMO":7128423,"NAME":"CSL NIAGARA","CALLSIGN":"VCGJ","TYPE":70,"A":196,"B":29,"C":12,"D":12,"DRAUGHT":6.1,"DEST":"HAMILTON","ETA":"03-28 17:00"},
-{"MMSI":368169360,"TIME":"2024-03-04 08:48:50 GMT","LONGITUDE":174.75297,"LATITUDE":-36.84044,"COG":172.1,"SOG":0,"HEADING":286,"ROT":0,"NAVSTAT":5,"IMO":0,"NAME":"STEADFAST","CALLSIGN":"WDL8420","TYPE":37,"A":22,"B":24,"C":10,"D":0,"DRAUGHT":3.5,"DEST":"AUCK_M FUERTE AMADOR","ETA":"02-22 18:00"},
-{"MMSI":244770340,"TIME":"2024-03-04 08:50:35 GMT","LONGITUDE":4.10026,"LATITUDE":51.6629,"COG":300.2,"SOG":3,"HEADING":511,"ROT":128,"NAVSTAT":0,"IMO":0,"NAME":"RWS 84","CALLSIGN":"PD4546","TYPE":99,"A":8,"B":14,"C":3,"D":3,"DRAUGHT":1.3,"DEST":"WEMELDINGE","ETA":"00-00 24:60"},
-{"MMSI":244670683,"TIME":"2024-03-04 08:44:56 GMT","LONGITUDE":4.89068,"LATITUDE":52.3875,"COG":360,"SOG":0,"HEADING":511,"ROT":128,"NAVSTAT":8,"IMO":0,"NAME":"DE RODE HAAN","CALLSIGN":"PB9708","TYPE":37,"A":11,"B":12,"C":1,"D":4,"DRAUGHT":0,"DEST":"İSTANBUL","ETA":"07-09 10:40"},
-]
-// To handle a GET request to /api
-export async function GET(request) {
-    // Do whatever you want
-    return NextResponse.json(data, { status: 200 });
-  }
+
+  const externalApiUrl = 'https://data.aishub.net/ws.php?username=AH_TRIAL_8AFCE7C7&format=1&output=json'; // Dış API'nin URL'sini buraya ekleyin
   
+  // Dış API'ya istek gönderen işlev
+  async function sendRequestToExternalAPI() {
+    try {
+        const response = await axios.get(externalApiUrl);
+        await connectMongodb(); // MongoDB'ye bağlan
+        const destinations = await Destination.find();
+         //Veriyi düzleştir
+         const flattedData = response.data.slice(1).flat();
+         // Verileri filtreleyerek MongoDB'de kaydedilmemiş olanları al
+         const filteredData = flattedData.filter(item =>
+          !destinations.some(dataItem => dataItem.MMSI == item.MMSI && dataItem.DEST == item.DEST)
+         );
+         console.log(filteredData)
+         const insertPromises = filteredData.map(doc => 
+          Destination.create({MMSI:doc.MMSI, DEST:doc.DEST, NAVSTAT:doc.NAVSTAT, TYPE:doc.TYPE, LONGITUDE:doc.LONGITUDE, LATITUDE:doc.LATITUDE, NAME: doc.NAME, TIME: doc.TIME,COG: doc.COG, SOG:doc.SOG,A:doc.A,B:doc.B,C:doc.C,D:doc.D,HEADING: doc.HEADING, ROT:doc.ROT,CALLSIGN:doc.CALLSIGN,DRAUGHT:doc.DRAUGHT,ETA:doc.ETA, IMO:doc.IMO})); // Tüm ekleme işlemlerini başlat
+          return Promise.all(insertPromises)
+         .then(() => {
+             return new Response(JSON.stringify({ message: "Destinations created" }), { status: 201, headers: { 'Content-Type': 'application/json' } });
+         })
+         .catch((error) => {
+             console.error("Error inserting destinations:", error);
+             return new Response(JSON.stringify({ message: "Error inserting destinations" }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+         });
+
+
+    } catch (error) {
+        console.error('Error sending request to external API:', error);
+    }
+  }
+
+  // Belirli aralıklarla dış API'ya istek göndermek için bir zamanlayıcı kurma
+  setInterval(sendRequestToExternalAPI, 60*60*1000); // Her 10 saniyede bir (10 * 1000 milisaniye)

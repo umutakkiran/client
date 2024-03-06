@@ -2,7 +2,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaArrowRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 const CardComponent = ({selectedShip, visible, setCardVisible}) => {
+    const router = useRouter();
     const [destinations, setDestinations] = useState([])
 
     function formatDate(dateString) {
@@ -166,7 +168,7 @@ const CardComponent = ({selectedShip, visible, setCardVisible}) => {
                 <IoCloseSharp className=" w-5 h-5" />
                 </button>
                 
-                <a href={`/shipdetails/${selectedShip[0].MMSI}`} className=" flex flex-row justify-center items-center font-bold font-mono">{selectedShip[0].NAME}<span className=" ml-3"><FaArrowRight /></span></a>
+                <button onClick={() => router.push(`/shipdetails/${selectedShip[0].MMSI}`)} className=" flex flex-row justify-center items-center font-bold font-mono">{selectedShip[0].NAME}<span className=" ml-3"><FaArrowRight /></span></button>
                 </div>
                 <div className=" w-full h-48 relative">
                 <Image fill src={"https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"} alt="noimage" />

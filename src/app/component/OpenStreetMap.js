@@ -35,6 +35,7 @@ const Map2 = ({data, onPressShip}) => {
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            style="http://my-tile-server/{z}/{x}/{y}.png"
           />
           {data?.map((item, index) => (
             <Marker

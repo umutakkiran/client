@@ -113,14 +113,10 @@ export default function Home() {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch('/api');
+            const response = await fetch(`/api/destination/${params.id}`);
             const data = await response.json();
-            data?.map((item) => (
-                item.MMSI == params.id ?
-                    setSelectedShip(item)
-                    :
-                    null
-            ))
+            console.log(JSON.stringify(data) + "data")
+            setSelectedShip(data.destinations);
             setLoaded(true);
         }
 
@@ -135,14 +131,14 @@ export default function Home() {
                 {selectedShip ?
                     <>
                         <div className=' w-[50%] h-[50%] shadow-lg rounded-lg bg-[#818FB4] p-3'>
-                             <h1 className=' font-bold font-mono'>{selectedShip.NAME}</h1>
-                             <p className=' font-mono text-sm'>IMO Number: <span className=' font-bold font-mono'>{selectedShip.IMO}</span> </p>
-                             <p className=' font-mono text-sm'>Ship Type: <span className=' font-bold font-mono'>{shipTypes.filter(x => x.Type == selectedShip.TYPE )[0]?.Name}</span> </p>
-                             <p className=' font-mono text-sm'>Ship Type: <span className=' font-bold font-mono'>{selectedShip.A}</span> </p>
-                             <p className=' font-mono text-sm'>Gross Tonnage: <span className=' font-bold font-mono'>{selectedShip.B}</span> </p>
-                             <p className=' font-mono text-sm'>Summer Deadweight: <span className=' font-bold font-mono'>{selectedShip.C}</span> </p>
-                             <p className=' font-mono text-sm'>Length Overall: <span className=' font-bold font-mono'>{selectedShip.D}</span> </p>
-                             <p className=' font-mono text-sm'>Beam: <span className=' font-bold font-mono'>{selectedShip.CALLSIGN}</span> </p>
+                             <h1 className=' font-bold font-mono'>{selectedShip[0].NAME}</h1>
+                             <p className=' font-mono text-sm'>IMO Number: <span className=' font-bold font-mono'>{selectedShip[0].IMO}</span> </p>
+                             <p className=' font-mono text-sm'>Ship Type: <span className=' font-bold font-mono'>{shipTypes.filter(x => x.Type == selectedShip[0].TYPE )[0]?.Name}</span> </p>
+                             <p className=' font-mono text-sm'>Ship Type: <span className=' font-bold font-mono'>{selectedShip[0].A}</span> </p>
+                             <p className=' font-mono text-sm'>Gross Tonnage: <span className=' font-bold font-mono'>{selectedShip[0].B}</span> </p>
+                             <p className=' font-mono text-sm'>Summer Deadweight: <span className=' font-bold font-mono'>{selectedShip[0].C}</span> </p>
+                             <p className=' font-mono text-sm'>Length Overall: <span className=' font-bold font-mono'>{selectedShip[0].D}</span> </p>
+                             <p className=' font-mono text-sm'>Beam: <span className=' font-bold font-mono'>{selectedShip[0].CALLSIGN}</span> </p>
                         </div>
                     </>
                     :

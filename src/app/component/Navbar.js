@@ -3,23 +3,15 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
 const Navbar = () => {
   const router = useRouter();
   const [searchWord, setSearchword] = useState("")
-  const [data, setData] = useState(null);
-  const [loaded, setLoaded] = useState(false)
+  const allShips = useSelector(state => state.allShips)
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch('/api');
-      const data = await response.json();
-      setData(data);
-      setLoaded(true)
-    }
-
-    loaded === false ?
-      fetchData() : null
-  }, [loaded, searchWord]);
+    
+  }, [allShips, searchWord]);
 
   return (
     <>
@@ -49,8 +41,8 @@ const Navbar = () => {
         </div>
       </div>
       {searchWord !== "" ?
-        <div className=" w-96 h-[90%] bg-white absolute top-12 right-0 z-[500] p-3 shadow-lg rounded-br-lg rounded-bl-lg">
-          {data.map((item, index) => (
+        <div className=" w-96 h-[90%] bg-white absolute top-12 right-0 z-[500] p-3 shadow-lg rounded-br-lg rounded-bl-lg overflow-scroll">
+          {allShips?.data?.map((item, index) => (
             item.NAME.toLowerCase().includes(searchWord.toLowerCase()) ?
               <a key={index} href={`/shipdetails/${item.MMSI}`} className=" border-b-2 font-bold font-mono text-sm flex flex-row justify-between items-center">{item.NAME}<span className=" ml-3"><FaArrowRight /></span></a>
               :

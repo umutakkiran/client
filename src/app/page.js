@@ -24,8 +24,7 @@ export default function Home() {
        dispatch(getShipsDataThunk());
     };
 
-  fetchData();
-    
+    fetchData();
   }, [dispatch]);
 
  

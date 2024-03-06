@@ -1,5 +1,5 @@
 import { DepartureFinder } from "@/app/component/DepartureFinder";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const Table = ({ value, isDeparture }) => {
     const allShips = useSelector(state => state.allShips)
@@ -24,7 +24,7 @@ const Table = ({ value, isDeparture }) => {
     useEffect(() => {
         const res = [];
         allShips?.data?.map((item) => (
-            value?.some((dataItem) => dataItem === item.NAVSTAT) ?
+            value?.some((dataItem) => dataItem == item.NAVSTAT) ?
                 res.push(item)
                 :
                 null
@@ -52,6 +52,7 @@ const Table = ({ value, isDeparture }) => {
 
     return (
         <>
+            <Suspense fallback={<p>Loading...</p>}>
             <div className='  transition-all ease-in-out duration-700 pb-10 shadow-lg w-[90%] h-48'>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <caption className="p-5 text-lg font-semibold font-mono text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
@@ -112,6 +113,8 @@ const Table = ({ value, isDeparture }) => {
                     </tbody>
                 </table>
             </div>
+            </Suspense>
+           
         </>
     )
 
