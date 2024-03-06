@@ -2,13 +2,12 @@ import { NextResponse } from "next/server";
 import connectMongodb from "../../../../libs/mongodb";
 import Destination from "../../../../models/destination";
 import Cors from 'cors';
-import initMiddleware from '../../lib/init-middleware';
-
+import initMiddleware from "../../../../libs/init-middleware";
 // Initialize the cors middleware
 const cors = initMiddleware(
     Cors({
       // Allow only requests from the specified domains
-      origin: ['http://example.com', 'http://localhost:3000'],
+      origin: ['http://example.com', 'http://localhost:3000' , "https://seatracker.netlify.app"],
       // Allow only certain HTTP methods
       methods: ['GET', 'POST'],
     })

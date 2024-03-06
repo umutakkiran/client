@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import connectMongodb from "../../../../../libs/mongodb";
 import Destination from "../../../../../models/destination";
 import Cors from 'cors';
-import initMiddleware from '../../lib/init-middleware';
-
+import initMiddleware from "../../../../../libs/init-middleware";
 // Initialize the cors middleware
 const cors = initMiddleware(
     Cors({
