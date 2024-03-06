@@ -18,7 +18,7 @@ export const getShipsDataThunk = () => {
             const result = await res.json();
             dispatch(AllShipsAction.replaceShips(result));
                // MongoDB'de kaydedilmiş verilerin listesini al
-               const preDatares = await fetch('http://localhost:3000/api/destination');
+               const preDatares = await fetch('/api/destination');
                const preData = await preDatares.json();
 
                // Verileri filtreleyerek MongoDB'de kaydedilmemiş olanları al

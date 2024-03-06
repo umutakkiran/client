@@ -8,7 +8,7 @@ import initMiddleware from '../../lib/init-middleware';
 const cors = initMiddleware(
     Cors({
       // Allow only requests from the specified domains
-      origin: ['http://example.com', 'http://localhost:3000'],
+      origin: ['http://example.com', 'http://localhost:3000', "https://seatracker.netlify.app"],
       // Allow only certain HTTP methods
       methods: ['GET', 'POST'],
     })
