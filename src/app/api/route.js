@@ -3,7 +3,14 @@ import axios from 'axios';
 import connectMongodb from "../../../libs/mongodb";
 import Destination from "../../../models/destination";
 
+export async function GET() {
+    await connectMongodb();
+    const typesToFind = [37, 61, 10]; // Aradığınız türlerin listesi
+    const destinations = await Destination.find({ TYPE: { $in: typesToFind } }).limit(1000);
 
+    
+    return NextResponse.json({destinations})
+}
   const externalApiUrl = 'https://data.aishub.net/ws.php?username=AH_TRIAL_8AFCE7C7&format=1&output=json'; // Dış API'nin URL'sini buraya ekleyin
   
   // Dış API'ya istek gönderen işlev
@@ -36,5 +43,6 @@ import Destination from "../../../models/destination";
     }
   }
 
+  sendRequestToExternalAPI();
   // Belirli aralıklarla dış API'ya istek göndermek için bir zamanlayıcı kurma
-  setInterval(sendRequestToExternalAPI, 60*60*1000); // Her 10 saniyede bir (10 * 1000 milisaniye)
+  // setInterval(sendRequestToExternalAPI, 60*60*1000); // Her 10 saniyede bir (10 * 1000 milisaniye)

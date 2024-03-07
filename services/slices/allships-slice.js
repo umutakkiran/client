@@ -13,7 +13,7 @@ const AllShipsSlice = createSlice({
 
 export const getShipsDataThunk = () => {
     return async (dispatch) => {
-        const res = await fetch(`/api/destination`);
+        const res = await fetch(`/api`);
         const result = await res.json();
         console.log(JSON.stringify(result) + "RESULT")
         dispatch(AllShipsAction.replaceShips(result.destinations));
