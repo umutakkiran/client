@@ -21,7 +21,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-       dispatch(getShipsDataThunk(11,58,-15,81));
+       dispatch(getShipsDataThunk(0,100,-81,81));
     };
 
     fetchData();
@@ -54,7 +54,7 @@ export default function Home() {
         <div className=' w-[97%] h-full relative'>
           <CardComponent selectedShip={selectedShipInfo} setCardVisible={setCardVisible} visible={cardVisible} />
           { allShips ?
-            <OpenStreetMap data={allShips?.data} onPressShip={(data) => handleSelectShip(data)} />
+            <OpenStreetMap onPressShip={(data) => handleSelectShip(data)} />
             :
             null
           }

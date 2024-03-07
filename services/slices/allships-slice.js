@@ -29,9 +29,6 @@ export const getShipsDataThunk = (minLatitude, maxLatitude, minLongitude, maxLon
         .then(response => response.json())
         .then(data => dispatch(AllShipsAction.replaceShips(data.destinations)))
         .catch(error => console.error('Error:', error));
-
-        
-        ;
         }
 }
 

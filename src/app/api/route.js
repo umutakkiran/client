@@ -16,7 +16,7 @@ export async function POST(request) {
         TYPE: { $in: typesToFind },
         LATITUDE: { $gte: minLatitude, $lte: maxLatitude },
         LONGITUDE: { $gte: minLongitude, $lte: maxLongitude }
-    }).limit(1000);
+    }).limit(500);
 
         return NextResponse.json({ destinations });
 }
@@ -52,6 +52,6 @@ export async function POST(request) {
     }
   }
 
-  sendRequestToExternalAPI();
+  //sendRequestToExternalAPI();
   // Belirli aralıklarla dış API'ya istek göndermek için bir zamanlayıcı kurma
-  // setInterval(sendRequestToExternalAPI, 60*60*1000); // Her 10 saniyede bir (10 * 1000 milisaniye)
+   setInterval(sendRequestToExternalAPI, 5*60*1000); // Her 10 saniyede bir (10 * 1000 milisaniye)

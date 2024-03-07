@@ -43,7 +43,7 @@ const Navbar = () => {
       {searchWord !== "" ?
         <div className=" w-96 h-[90%] bg-white absolute top-12 right-0 z-[500] p-3 shadow-lg rounded-br-lg rounded-bl-lg overflow-scroll">
           {allShips?.data?.map((item, index) => (
-            item.NAME.toLowerCase().includes(searchWord.toLowerCase()) ?
+            item.NAME?.toLowerCase().includes(searchWord.toLowerCase()) ?
               <a key={index} href={`/shipdetails/${item.MMSI}`} className=" border-b-2 font-bold font-mono text-sm flex flex-row justify-between items-center">{item.NAME}<span className=" ml-3"><FaArrowRight /></span></a>
               :
               null
