@@ -36,6 +36,7 @@ const Table = ({ value, isDeparture }) => {
             handleGetDepartures(res);
         }
 
+        console.log(filteredData)
     }, [allShips, value, isDeparture]);
 
     const handleGetDepartures = async (data) => {
