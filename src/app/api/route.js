@@ -3,13 +3,22 @@ import axios from 'axios';
 import connectMongodb from "../../../libs/mongodb";
 import Destination from "../../../models/destination";
 
-export async function GET() {
+export async function POST(request) {
     await connectMongodb();
-    const typesToFind = [37, 61, 10]; // Aradığınız türlerin listesi
-    const destinations = await Destination.find({ TYPE: { $in: typesToFind } }).limit(1000);
+    // Gelen isteğin body kısmını alın
+    const requestBody = await request.json();
 
-    
-    return NextResponse.json({destinations})
+    // Gelen isteğin içindeki verilere erişim sağlayın
+    const { minLatitude, maxLatitude, minLongitude, maxLongitude, typesToFind } = requestBody;
+
+    // Eğer değerler gelmişse ve uygunsa, sorguyu çalıştırın
+    const destinations = await Destination.find({
+        TYPE: { $in: typesToFind },
+        LATITUDE: { $gte: minLatitude, $lte: maxLatitude },
+        LONGITUDE: { $gte: minLongitude, $lte: maxLongitude }
+    }).limit(1000);
+
+        return NextResponse.json({ destinations });
 }
   const externalApiUrl = 'https://data.aishub.net/ws.php?username=AH_TRIAL_8AFCE7C7&format=1&output=json'; // Dış API'nin URL'sini buraya ekleyin
   

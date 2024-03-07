@@ -11,12 +11,27 @@ const AllShipsSlice = createSlice({
     }
 })
 
-export const getShipsDataThunk = () => {
+export const getShipsDataThunk = (minLatitude, maxLatitude, minLongitude, maxLongitude) => {
     return async (dispatch) => {
-        const res = await fetch(`/api`);
-        const result = await res.json();
-        console.log(JSON.stringify(result) + "RESULT")
-        dispatch(AllShipsAction.replaceShips(result.destinations));
+        fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                minLatitude: minLatitude,
+                maxLatitude: maxLatitude,
+                minLongitude: minLongitude,
+                maxLongitude: maxLongitude,
+                typesToFind: [37, 61, 10, 0, 1, 70, 80 ,90]
+            }),
+        })
+        .then(response => response.json())
+        .then(data => dispatch(AllShipsAction.replaceShips(data.destinations)))
+        .catch(error => console.error('Error:', error));
+
+        
+        ;
         }
 }
 

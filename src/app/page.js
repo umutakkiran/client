@@ -21,7 +21,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-       dispatch(getShipsDataThunk());
+       dispatch(getShipsDataThunk(11,58,-15,81));
     };
 
     fetchData();

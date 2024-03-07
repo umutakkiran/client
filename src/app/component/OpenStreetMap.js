@@ -1,9 +1,9 @@
 "use client"
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, ZoomControl, Tooltip} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { IconGenerator } from './IconGenerator';
-
+import { ZoomComponent } from './ZoomComponent';
 
 const Map2 = ({data, onPressShip}) => {
   const [center, setCenter] = useState({ lat: 39.1667, lng: 35 })
@@ -35,7 +35,6 @@ const Map2 = ({data, onPressShip}) => {
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            style="http://my-tile-server/{z}/{x}/{y}.png"
           />
           {data?.map((item, index) => (
             <Marker
@@ -54,6 +53,7 @@ const Map2 = ({data, onPressShip}) => {
               </Tooltip>
             </Marker>
           ))}
+          <ZoomComponent />
           <ZoomControl position="bottomright" />
         </MapContainer>
       </div>
